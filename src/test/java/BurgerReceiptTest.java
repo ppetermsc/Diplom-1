@@ -18,25 +18,53 @@ public class BurgerReceiptTest {
     private final String bunName;
     private final IngredientType ingredientType;
     private final String ingredientName;
+    private final String expectedReceipt;
 
-    public BurgerReceiptTest(String bunName, IngredientType ingredientType, String ingredientName) {
+
+    public BurgerReceiptTest(String bunName, IngredientType ingredientType, String ingredientName,
+                             String expectedReceipt) {
         this.bunName = bunName;
         this.ingredientType = ingredientType;
         this.ingredientName = ingredientName;
+        this.expectedReceipt = expectedReceipt;
     }
-
     @Parameterized.Parameters(name = "Тест {index}: чек для бургера с булочкой ''{0}'' и ингредиентом {1} ''{2}''")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {"черная булочка", IngredientType.SAUCE, "острый соус"},
-                {"белая булочка", IngredientType.FILLING, "котлета"},
-                {"красная булочка", IngredientType.SAUCE, "чили соус"},
-                {"особая булочка", IngredientType.FILLING, "сыр"}
+                {
+                        "черная булочка",
+                        IngredientType.SAUCE,
+                        "острый соус",
+                        "(==== черная булочка ====)\n= sauce острый соус =\n(==== черная булочка ====)" +
+                                "\n\nPrice: 250,000000\n"
+                },
+                {
+                        "белая булочка",
+                        IngredientType.FILLING,
+                        "котлета",
+                        "(==== белая булочка ====)\n= filling котлета =\n(==== белая булочка ====)" +
+                                "\n\nPrice: 250,000000\n"
+                },
+                {
+                        "красная булочка",
+                        IngredientType.SAUCE,
+                        "чили соус",
+                        "(==== красная булочка ====)\n= sauce чили соус =\n(==== красная булочка ====)" +
+                                "\n\nPrice: 250,000000\n"
+                },
+                {
+                        "особая булочка",
+                        IngredientType.FILLING,
+                        "сыр",
+                        "(==== особая булочка ====)\n= filling сыр =\n(==== особая булочка ====)" +
+                                "\n\nPrice: 250,000000\n"
+                }
         });
     }
 
     @Test
-    public void testGetReceiptWithIngredients() {
+    public void testGetReceiptReturnsCorrectFormat() {
+        // Arrange
         Burger burger = new Burger();
 
         Bun bunMock = mock(Bun.class);
@@ -51,11 +79,11 @@ public class BurgerReceiptTest {
         burger.setBuns(bunMock);
         burger.addIngredient(ingredientMock);
 
-        String receipt = burger.getReceipt();
+        // Act
+        String actualReceipt = burger.getReceipt();
 
-        assertNotNull("Чек не должен быть null", receipt);
-        assertTrue("Чек должен содержать название булочки", receipt.contains(bunName));
-        assertTrue("Чек должен содержать название ингредиента", receipt.contains(ingredientName.toLowerCase()));
-        assertTrue("Чек должен содержать цену", receipt.contains("Price:"));
+        // Assert - проверка формата чека целиком
+        assertEquals("Чек должен полностью соответствовать ожидаемому формату",
+                expectedReceipt, actualReceipt);
     }
 }
