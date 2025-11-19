@@ -15,7 +15,6 @@ public class BurgerTest {
     public void setUp() {
         burger = new Burger();
     }
-
     @Test
     public void testSetBuns() {
         // Arrange
@@ -94,4 +93,5 @@ public class BurgerTest {
         assertEquals("Остальные элементы должны сдвинуться корректно",
                 cutlet, burger.ingredients.get(0));
     }
+
 }

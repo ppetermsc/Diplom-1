@@ -86,4 +86,5 @@ public class BurgerReceiptTest {
         assertEquals("Чек должен полностью соответствовать ожидаемому формату",
                 expectedReceipt, actualReceipt);
     }
+
 }

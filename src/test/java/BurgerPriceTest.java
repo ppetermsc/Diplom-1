@@ -68,4 +68,5 @@ public class BurgerPriceTest {
         assertEquals("Цена бургера должна соответствовать ожидаемой",
                 expectedPrice, burger.getPrice(), DELTA);
     }
+
 }
